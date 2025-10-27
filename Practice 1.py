@@ -18,7 +18,7 @@ def system(variables, r):
 
 initial_conditions = [0, 1]
 
-r = np.linspace(0.0000000000001, 2000, 10)
+r = np.linspace(0.0000000000001, 2000, 1000)
 
 solution = odeint(system, initial_conditions, r)
 

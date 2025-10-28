@@ -5,10 +5,6 @@ import matplotlib.pyplot as plt
 
 def system(state, r, l, m_e, E, a):
     u, v = state  
-    #l=0
-    #m_e=51100
-    #E=-14
-    #a= 1/137
     dudr = v       
     dvdr = l*(l+1)*u/(r**2) - 2*m_e*(E+a/r) * u         
     return [dudr, dvdr]

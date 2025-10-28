@@ -9,7 +9,6 @@ def system(state, r, l, m_e, E, a):
     dvdr = l*(l+1)*u/(r**2) - 2*m_e*(E+a/r) * u         
     return [dudr, dvdr]
 
-
 initial_conditions = [0, 1]
 r = np.linspace(0.1, 2000, 10000)
 l=0

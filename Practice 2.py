@@ -1,4 +1,3 @@
-#def SolveSecondOrderDif(l,E_1, E_2, E_3):
 import numpy as np
 from scipy.integrate import odeint
 import matplotlib.pyplot as plt
@@ -46,7 +45,7 @@ a= 1/137
 E3 = -6E-6
 E2 = (E1+E3)/2
 
-for i in range(500):
+for i in range(50):
     u, v, u1, v1, u2, v2 = Solve(initial_conditions, r, l, m_e, E1, E2, E3, a)
     Node1 = (CalculateNodes(u, v))
     Node2 = (CalculateNodes(u1, v1))
@@ -69,3 +68,4 @@ plt.ylabel('Values of x and y')
 plt.grid()
 plt.show()
 
+#Need to add number of nodes. For l=0 the number of nodes and turning points should be n-1 and n respectively. 

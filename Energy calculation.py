@@ -5,9 +5,14 @@ def CalculateEnergy(x,y):
             cross += 1
     return cross
 
-x = [1,2,3,4,5]
-y = [1,2,-7,-3,-4]
+x1 = [1,2,3,4,5]
+y1 = [1,2,-7,-3,-4]
+x2 = [1,2,3,4,5]
+y2 = [1,2,-7,-3,4]
+x3 = [1,2,3,4,5]
+y3 = [1,2,7,3,4]
 
-nodes = CalculateEnergy(x,y)
-print(nodes)
+for i in range(1,4):
+    node[i] = CalculateEnergy(x1,y1)
+print(node)
         

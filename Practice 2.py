@@ -14,7 +14,6 @@ def CalculateEnergy(n):
     E1 = -1.36E-5/n**2+2E-7
     E3 = -1.36E-5/n**2-2E-7
     E2 = (E1 + E3)/2
-    print(E1, E2, E3)
     return E1, E2, E3
 
 def CalculateNodes(x,y):
@@ -75,7 +74,6 @@ while abs(E3 - E1) > 1E-15:
     E1, E2, E3 = NewEnergy(E1, E2, E3, Node1, Node2, Node3, Count1, Count2, Count3)
     
 print(E2)
-print(Count1, Count2, Count3)
 u_2 = normalisation(u, r)
 u_3 = normalisation(u1, r)
 u_4 = normalisation(u2, r)

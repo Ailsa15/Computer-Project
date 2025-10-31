@@ -1,7 +1,6 @@
 import numpy as np
 from scipy.integrate import odeint
 import matplotlib.pyplot as plt
-from sympy import symbols, diff, solve
 from scipy.integrate import simpson
 
 def system(state, r, l, m_e, E, a, n):
@@ -82,12 +81,7 @@ plt.figure(figsize=(10, 5))
 plt.plot(r, u_2, label='x(t)', color='blue')
 plt.plot(r, u_3, label='x(t)', color='orange')
 plt.plot(r, u_4, label='x(t)', color='red')
-#plt.plot(r, v, label='y(t)', color='orange')
-plt.title('Solution of Coupled First-Order Differential Equations')
 plt.xlabel('r')
-plt.ylabel('Values of x and y')
-#plt.legend()
+plt.ylabel('|U_nl(r)|^2')
 plt.grid()
 plt.show()
-
-#Need to add number of nodes. For l=0 the number of nodes and turning points should be n-1 and n respectively. 

@@ -8,8 +8,14 @@ def system(state, r, l, m_e, E, a, n):
     u, v = state  
     dudr = v       
     dvdr = l*(l+1)*u/(r**2) - 2*m_e*(E+a/r) * u   
-    #dvdr = l*(l+1)*u/(r**2) - 2*m_e*(E-(2*270*n**2*E)/r) * u        
     return [dudr, dvdr]
+
+def CalculateEnergy(n):
+    E1 = -1.36E-5/n**2+2E-7
+    E3 = -1.36E-5/n**2-2E-7
+    E2 = (E1 + E3)/2
+    print(E1, E2, E3)
+    return E1, E2, E3
 
 def CalculateNodes(x,y):
     cross = 0
@@ -45,27 +51,20 @@ def Solve(initial_conditions, r, l, m_e, E1, E2, E3, a, n):
 
 def normalisation(u, r):
     normalisation = simpson(u**2, r)
-    u5 = u/np.sqrt(normalisation)
-    u7 = u5**2
-    return u7
+    u_normalised = u/np.sqrt(normalisation)
+    u_squared = u_normalised**2
+    return u_squared
 
     
 initial_conditions = [0, 1]
 r = np.linspace(0.1, 5000, 1000)
-l=0
+l=1
 n=2
 m_e=0.511  
-
-#Need to calculate energy for different n values and then imput limits based on that.
-#Use a while loop for the difference between E3 and E1 being less than a certain value.
-#Use turning points and nodes to find the correct energy level.
-
-E1= -3.6E-6
 a= 1/137
-E3 = -3.2E-6
-E2 = (E1+E3)/2
+E1, E2, E3 = CalculateEnergy(n) 
 
-for i in range(100):
+while abs(E3 - E1) > 1E-15:
     u, v, u1, v1, u2, v2 = Solve(initial_conditions, r, l, m_e, E1, E2, E3, a, n)
     Node1 = (CalculateNodes(u, v))
     Node2 = (CalculateNodes(u1, v1))

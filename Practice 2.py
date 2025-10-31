@@ -2,6 +2,7 @@ import numpy as np
 from scipy.integrate import odeint
 import matplotlib.pyplot as plt
 from sympy import symbols, diff, solve
+from scipy.integrate import simpson
 
 def system(state, r, l, m_e, E, a, n):
     u, v = state  
@@ -42,8 +43,12 @@ def Solve(initial_conditions, r, l, m_e, E1, E2, E3, a, n):
     u2, v2 = solution2.T
     return u, v, u1, v1, u2, v2
 
-def normalisation:
-    
+def normalisation(u, r):
+    normalisation = simpson(u**2, r)
+    u5 = u/np.sqrt(normalisation)
+    u7 = u5**2
+    return u7
+
     
 initial_conditions = [0, 1]
 r = np.linspace(0.1, 5000, 1000)
@@ -52,6 +57,8 @@ n=2
 m_e=0.511  
 
 #Need to calculate energy for different n values and then imput limits based on that.
+#Use a while loop for the difference between E3 and E1 being less than a certain value.
+#Use turning points and nodes to find the correct energy level.
 
 E1= -3.6E-6
 a= 1/137
@@ -70,11 +77,14 @@ for i in range(100):
     
 print(E2)
 print(Count1, Count2, Count3)
+u_2 = normalisation(u, r)
+u_3 = normalisation(u1, r)
+u_4 = normalisation(u2, r)
 
 plt.figure(figsize=(10, 5))
-plt.plot(r, u, label='x(t)', color='blue')
-plt.plot(r, u1, label='x(t)', color='orange')
-plt.plot(r, u2, label='x(t)', color='red')
+plt.plot(r, u_2, label='x(t)', color='blue')
+plt.plot(r, u_3, label='x(t)', color='orange')
+plt.plot(r, u_4, label='x(t)', color='red')
 #plt.plot(r, v, label='y(t)', color='orange')
 plt.title('Solution of Coupled First-Order Differential Equations')
 plt.xlabel('r')

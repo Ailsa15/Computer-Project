@@ -55,33 +55,47 @@ def normalisation(u, r):
 
     
 initial_conditions = [0, 1]
-r = np.linspace(0.1, 5000, 1000)
-l=1
-n=2
+l= [0, 0, 1]
+n= [1, 2, 2]
 m_e=0.511  
 a= 1/137
-E1, E2, E3 = CalculateEnergy(n) 
+#a_0 = 5.29177210544E-11*8.065543937E5
+a_0 = 1.36E-5  # Bohr radius in meters
+r = np.linspace(1E-7*a_0, 5000, 1001)
+u = np.zeros((3,1001))
+v = np.zeros((3,1001))
+u1 = np.zeros((3,1001))     
+v1 = np.zeros((3,1001))
+u2 = np.zeros((3,1001))
+v2 = np.zeros((3,1001))
+u_2 = np.zeros((3,1001))
+u_3 = np.zeros((3,1001))
+u_4 = np.zeros((3,1001))
+#E1, E2, E3 = CalculateEnergy(n) 
 
-while abs(E3 - E1) > 1E-15:
-    u, v, u1, v1, u2, v2 = Solve(initial_conditions, r, l, m_e, E1, E2, E3, a, n)
-    Node1 = (CalculateNodes(u, v))
-    Node2 = (CalculateNodes(u1, v1))
-    Node3 = (CalculateNodes(u2, v2))
-    Count1 = (CalculateTurningPoints(v))
-    Count2 = (CalculateTurningPoints(v1))
-    Count3 = (CalculateTurningPoints(v2))
-    E1, E2, E3 = NewEnergy(E1, E2, E3, Node1, Node2, Node3, Count1, Count2, Count3)
-    
-print(E2)
-u_2 = normalisation(u, r)
-u_3 = normalisation(u1, r)
-u_4 = normalisation(u2, r)
+for i in range(0,3):
+    E1, E2, E3 = CalculateEnergy(n[i]) 
+    while abs(E3 - E1) > 1E-15:
+        u[i,:], v[i,:], u1[i,:], v1[i,:], u2[i,:], v2[i,:] = Solve(initial_conditions, r, l[i], m_e, E1, E2, E3, a, n[i])
+        Node1 = (CalculateNodes(u[i,:], v[i,:]))
+        Node2 = (CalculateNodes(u1[i,:], v1[i,:]))
+        Node3 = (CalculateNodes(u2[i,:], v2[i,:]))
+        Count1 = (CalculateTurningPoints(v[i,:]))
+        Count2 = (CalculateTurningPoints(v1[i,:]))
+        Count3 = (CalculateTurningPoints(v2[i,:]))
+        E1, E2, E3 = NewEnergy(E1, E2, E3, Node1, Node2, Node3, Count1, Count2, Count3)
+    print(E2)
+    u_2[i,:] = normalisation(u[i,:], r)
+    u_3[i,:] = normalisation(u1[i,:], r)
+    u_4[i,:] = normalisation(u2[i,:], r)
 
 plt.figure(figsize=(10, 5))
-plt.plot(r, u_2, label='x(t)', color='blue')
-plt.plot(r, u_3, label='x(t)', color='orange')
-plt.plot(r, u_4, label='x(t)', color='red')
+plt.plot(r/a_0, u_3[0], label='x(t)', color='blue')
+plt.plot(r/a_0, u_3[1], label='x(t)', color='orange')
+plt.plot(r/a_0, u_3[2], label='x(t)', color='red')
+#plt.legend([n[i] for i in range(3)], title='n values')
 plt.xlabel('r')
 plt.ylabel('|U_nl(r)|^2')
 plt.grid()
 plt.show()
+

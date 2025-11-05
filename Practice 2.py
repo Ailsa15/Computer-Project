@@ -9,7 +9,7 @@ def system(state, r, l, m_e, E, a, n):
     dvdr = l*(l+1)*u/(r**2) - 2*m_e*(E+a/r) * u   
     return [dudr, dvdr]
 
-def CalculateEnergy(n):
+def CalculateInitialEnergy(n):
     E1 = -1.36E-5/n**2+2E-7
     E3 = -1.36E-5/n**2-2E-7
     E2 = (E1 + E3)/2
@@ -52,29 +52,18 @@ def normalisation(u, r):
     u_normalised = u/np.sqrt(normalisation)
     u_squared = u_normalised**2
     return u_squared
-
     
 initial_conditions = [0, 1]
 l= [0, 0, 1]
 n= [1, 2, 2]
 m_e=0.511  
 a= 1/137
-#a_0 = 5.29177210544E-11*8.065543937E5
-a_0 = 1.36E-5  # Bohr radius in meters
-r = np.linspace(1E-7*a_0, 5000, 1001)
-u = np.zeros((3,1001))
-v = np.zeros((3,1001))
-u1 = np.zeros((3,1001))     
-v1 = np.zeros((3,1001))
-u2 = np.zeros((3,1001))
-v2 = np.zeros((3,1001))
-u_2 = np.zeros((3,1001))
-u_3 = np.zeros((3,1001))
-u_4 = np.zeros((3,1001))
-#E1, E2, E3 = CalculateEnergy(n) 
+a_0 = 1/(m_e*a)
+r = np.linspace(1E-7*a_0, 2500, 1000)
+u, v, u1, v1, u2, v2, u_2, u_3, u_4 = np.zeros((9,3,len(r)))
 
 for i in range(0,3):
-    E1, E2, E3 = CalculateEnergy(n[i]) 
+    E1, E2, E3 = CalculateInitialEnergy(n[i]) 
     while abs(E3 - E1) > 1E-15:
         u[i,:], v[i,:], u1[i,:], v1[i,:], u2[i,:], v2[i,:] = Solve(initial_conditions, r, l[i], m_e, E1, E2, E3, a, n[i])
         Node1 = (CalculateNodes(u[i,:], v[i,:]))
@@ -89,13 +78,23 @@ for i in range(0,3):
     u_3[i,:] = normalisation(u1[i,:], r)
     u_4[i,:] = normalisation(u2[i,:], r)
 
+u_analytic, v_analytic, a_1 = np.zeros((3, 3, len(r)))
+for i in range(0,3):
+    E = -1.36E-5/n[i]**2
+    analytic = odeint(system, initial_conditions, r, args=(l[i], m_e, E, a, n[i]))
+    u_analytic[i,:], v_analytic[i,:] = analytic.T 
+    a_1[i,:] = normalisation(u_analytic[i,:], r)
+
 plt.figure(figsize=(10, 5))
 plt.plot(r/a_0, u_3[0], label='x(t)', color='blue')
 plt.plot(r/a_0, u_3[1], label='x(t)', color='orange')
 plt.plot(r/a_0, u_3[2], label='x(t)', color='red')
+plt.plot(r/a_0, a_1[0], '--', label='Analytic n=1,l=0', color='green')
+plt.plot(r/a_0, a_1[1], '--', label='Analytic n=2,l=0', color='purple')
+plt.plot(r/a_0, a_1[2], '--', label='Analytic n=2,l=1', color='brown')
 #plt.legend([n[i] for i in range(3)], title='n values')
-plt.xlabel('r')
-plt.ylabel('|U_nl(r)|^2')
+plt.xlabel(r'$\frac{r}{a_0}$')
+plt.ylabel(r'$|U_{nl}(r)|^{2}$')
 plt.grid()
 plt.show()
 

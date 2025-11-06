@@ -78,12 +78,15 @@ for i in range(0,3):
     u_3[i,:] = normalisation(u1[i,:], r)
     u_4[i,:] = normalisation(u2[i,:], r)
 
-u_analytic, v_analytic, a_1 = np.zeros((3, 3, len(r)))
+u_analytic, v_analytic, a_1, u_ratio = np.zeros((4, 3, len(r)))
 for i in range(0,3):
     E = -1.36E-5/n[i]**2
     analytic = odeint(system, initial_conditions, r, args=(l[i], m_e, E, a, n[i]))
     u_analytic[i,:], v_analytic[i,:] = analytic.T 
     a_1[i,:] = normalisation(u_analytic[i,:], r)
+    u_ratio[i,:] = (u_3[i,:]/a_1[i,:])
+#print(u_3[0], a_1[0])
+#print(u_ratio[0])
 
 plt.figure(figsize=(10, 5))
 plt.plot(r/a_0, u_3[0], label='x(t)', color='blue')
@@ -92,6 +95,9 @@ plt.plot(r/a_0, u_3[2], label='x(t)', color='red')
 plt.plot(r/a_0, a_1[0], '--', label='Analytic n=1,l=0', color='green')
 plt.plot(r/a_0, a_1[1], '--', label='Analytic n=2,l=0', color='purple')
 plt.plot(r/a_0, a_1[2], '--', label='Analytic n=2,l=1', color='brown')
+#plt.plot(r/a_0, u_ratio[0], '--', label='Analytic n=2,l=1', color='brown')
+#plt.plot(r/a_0, u_ratio[1], '--', label='Analytic n=2,l=1', color='brown')
+#plt.plot(r/a_0, u_ratio[2], '--', label='Analytic n=2,l=1', color='brown')
 #plt.legend([n[i] for i in range(3)], title='n values')
 plt.xlabel(r'$\frac{r}{a_0}$')
 plt.ylabel(r'$|U_{nl}(r)|^{2}$')

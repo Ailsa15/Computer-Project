@@ -84,10 +84,13 @@ for i in range(0,3):
     analytic = odeint(system, initial_conditions, r, args=(l[i], m_e, E, a, n[i]))
     u_analytic[i,:], v_analytic[i,:] = analytic.T 
     a_1[i,:] = normalisation(u_analytic[i,:], r)
-    u_ratio[i,:] = (u_3[i,:]/a_1[i,:])
-#print(u_3[0], a_1[0])
+    #u_ratio[i,:] = (u_3[i,:]/a_1[i,:])
+print(a_1[0])
 #print(u_ratio[0])
-
+#n_r = r[:500]
+#n_3 = u_3[0][:500]
+#n_1 = a_1[0][:500]
+#print(n_1)
 plt.figure(figsize=(10, 5))
 plt.plot(r/a_0, u_3[0], label='x(t)', color='blue')
 plt.plot(r/a_0, u_3[1], label='x(t)', color='orange')

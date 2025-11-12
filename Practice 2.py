@@ -59,7 +59,7 @@ n= [1, 2, 2]
 m_e=0.511  
 a= 1/137
 a_0 = 1/(m_e*a)
-r = np.linspace(1E-7*a_0, 2500, 1000)
+r = np.linspace(1E-7*a_0, 2500, 5000)
 u, v, u1, v1, u2, v2, u_2, u_3, u_4 = np.zeros((9,3,len(r)))
 
 for i in range(0,3):
@@ -87,18 +87,21 @@ for i in range(0,3):
     u_ratio[i,:] = (u_3[i,:]/a_1[i,:])
 #print(u_3[0], a_1[0])
 #print(u_ratio[0])
+#n_r = r[:2500]
+#n_3 = u_3[0][:2500]
+#n_1 = normalisation(u_analytic[0,:][:2500], n_r)
 
-plt.figure(figsize=(10, 5))
+plt.figure(figsize=(10, 10))
 plt.plot(r/a_0, u_3[0], label='x(t)', color='blue')
 plt.plot(r/a_0, u_3[1], label='x(t)', color='orange')
-plt.plot(r/a_0, u_3[2], label='x(t)', color='red')
+plt.plot(r/a_0, u_3[2], label='x(t)', color='purple')
 plt.plot(r/a_0, a_1[0], '--', label='Analytic n=1,l=0', color='green')
-plt.plot(r/a_0, a_1[1], '--', label='Analytic n=2,l=0', color='purple')
-plt.plot(r/a_0, a_1[2], '--', label='Analytic n=2,l=1', color='brown')
+plt.plot(r/a_0, a_1[1], '--', label='Analytic n=2,l=0', color='red')
+plt.plot(r/a_0, a_1[2], '--', label='Analytic n=2,l=1', color='pink')
 #plt.plot(r/a_0, u_ratio[0], '--', label='Analytic n=2,l=1', color='brown')
 #plt.plot(r/a_0, u_ratio[1], '--', label='Analytic n=2,l=1', color='brown')
 #plt.plot(r/a_0, u_ratio[2], '--', label='Analytic n=2,l=1', color='brown')
-#plt.legend([n[i] for i in range(3)], title='n values')
+plt.legend([n[i] for i in range(3)], title='n values')
 plt.xlabel(r'$\frac{r}{a_0}$')
 plt.ylabel(r'$|U_{nl}(r)|^{2}$')
 plt.grid()

@@ -8,12 +8,12 @@ def system(state, r, l, m_e, E, a):
     dvdr = l*(l+1)*u/(r**2) - 2*m_e*(E+a/r) * u         
     return [dudr, dvdr]
 
-colours = [
-    "#330C78",  # deep royal purple
-    "#77269A",  # vibrant violet
-    "#B7A3C2",  # light lavender purple
-    "#AB6DC6"   # pale lilac highlight
-]
+#colours = [
+ #   "#1E780C",  # deep royal purple
+ #   "#77269A",  # vibrant violet
+ #   "#B7A3C2",  # light lavender purple
+ #   "#AB6DC6"   # pale lilac highlight
+
 
 
 
@@ -41,10 +41,10 @@ u2, v2 = solution2.T
 u3, v3 = solution3.T   
 
 plt.figure(figsize=(10, 5))
-plt.plot(r, u3, label=f"E = E$_{0}$", color=colours[0])
-plt.plot(r, u2, label=f"E = E$_{1}$", color=colours[1])
-plt.plot(r2, u, label=f"E = E$_{2}$", color=colours[2])
-plt.plot(r1, u1, label=f"E = E$_{3}$", color=colours[3])
+plt.plot(r, u3, label=f"E = E$_{0}$", color='purple')
+plt.plot(r, u2, label=f"E = E$_{1}$", color='orange')
+plt.plot(r2, u, label=f"E = E$_{2}$", color='red')
+plt.plot(r1, u1, label=f"E = E$_{3}$", color='blue')
 
 plt.xlabel('r')
 plt.ylabel('U(r)')

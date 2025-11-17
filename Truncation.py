@@ -52,16 +52,23 @@ def normalisation(u, r):
     u_normalised = u/np.sqrt(normalisation)
     u_squared = u_normalised**2
     return u_squared
+
+def round_sig(x, sig=3):
+    return float(f"{x:.{sig}g}")
+
     
 initial_conditions = [0, 1]
 l= [0, 0, 1]
 n= [1, 2, 2]
-m_e=0.51099895069 
-a= 1/137
+#m_e=0.51099895069 
+m_e = 0.511
+#a= 1/137
+a = 7.30E-3
 a_0 = 1/(m_e*a)
 r = [np.linspace(1E-7*a_0, 2000, 1000), np.linspace(1E-7*a_0, 4200, 1000), np.linspace(1E-7*a_0, 4250, 1000)]
 u, v, u1, v1, u2, v2, u_2, u_3, u_4 = np.zeros((9,3,len(r[0])))
 
+Energy = np.zeros((3))
 for i in range(0,3):
     E1, E2, E3 = CalculateInitialEnergy(n[i]) 
     while abs(E3 - E1) > 1E-15:
@@ -73,11 +80,12 @@ for i in range(0,3):
         Count2 = (CalculateTurningPoints(v1[i,:]))
         Count3 = (CalculateTurningPoints(v2[i,:]))
         E1, E2, E3 = NewEnergy(E1, E2, E3, Node1, Node2, Node3, Count1, Count2, Count3)
-    print(E2)
+    E2 = round_sig(E2, sig=3)
+    #print(E2)
+    Energy[i] = E2
     u_2[i,:] = normalisation(u[i,:], r[i])
     u_3[i,:] = normalisation(u1[i,:], r[i])
     u_4[i,:] = normalisation(u2[i,:], r[i])
-    #print(u_3[i,:])
     
 u_analytic, v_analytic, a_1, u_ratio = np.zeros((4, 3, len(r[0])))
 for i in range(0,3):
@@ -86,15 +94,14 @@ for i in range(0,3):
     u_analytic[i,:], v_analytic[i,:] = analytic.T 
     a_1[i,:] = normalisation(u_analytic[i,:], r[i])
     #u_ratio[i,:] = (u_3[i,:]/a_1[i,:])
-
+print(Energy)
 plt.figure(figsize=(10, 5))
-#print(a_1[0])
-plt.plot(r[0]/a_0, u_3[0], label='Numerical (1,0)', color='blue')
-plt.plot(r[1]/a_0, u_3[1], label='Numerical (2,0)', color='orange')
-plt.plot(r[2]/a_0, u_3[2], label='Numerical (2,1)', color='red')
-plt.plot(r[0]/a_0, a_1[0], '--', label='Analytic (1,0)', color='green')
-plt.plot(r[1]/a_0, a_1[1], '--', label='Analytic (2,0)', color='purple')
-plt.plot(r[2]/a_0, a_1[2], '--', label='Analytic (2,1)', color='brown')
+plt.plot(r[0]/a_0, u_3[0], label=f'Numerical (1,0) Energy = {Energy[0]} eV', color='blue')
+plt.plot(r[1]/a_0, u_3[1], label=f'Numerical (2,0) Energy = {Energy[1]} eV', color='orange')
+plt.plot(r[2]/a_0, u_3[2], label=f'Numerical (2,1) Energy = {Energy[2]} eV', color='red')
+plt.plot(r[0]/a_0, a_1[0], '--', label=f'Analytic (1,0) Energy = {Energy[0]} eV', color='green')
+plt.plot(r[1]/a_0, a_1[1], '--', label=f'Analytic (2,0) Energy = {Energy[1]} eV', color='purple')
+plt.plot(r[2]/a_0, a_1[2], '--', label=f'Analytic (2,1) Energy = {Energy[2]} eV', color='brown')
 #plt.plot(r/a_0, u_ratio[0], '--', label='Analytic n=2,l=1', color='brown')
 #plt.plot(r/a_0, u_ratio[1], '--', label='Analytic n=2,l=1', color='brown')
 #plt.plot(r/a_0, u_ratio[2], '--', label='Analytic n=2,l=1', color='brown')

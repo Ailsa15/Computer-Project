@@ -53,9 +53,9 @@ n= [1, 1, 2]
 m_c = 1.34
 m_u = m_c/2
 a_s = 0.40 
-E1 = 0.3
-E2 = 0.4
-E3 = 0.5
+E1 = [0.3, 0.75, 0.95]
+E2 = [0.4, 0.8, 1]
+E3 = [0.5, 0.85, 1.1]
 r = np.linspace(1E-7, 15, 1000)
 u, v, u1, v1, u2, v2, u_2, u_3, u_4 = np.zeros((9,3,len(r)))
 b = 0.1951228877648632
@@ -79,25 +79,26 @@ b = 0.1951228877648632
 #print(E2)   
 #u, v, u1, v1, u2, v2, u_2, u_3, u_4 = np.zeros((9,3,len(r)))
 #b = 0.1951228877648632
-for i in range(0,1):
-    while abs(E3 - E1) > 1E-15:
-        u[i,:], v[i,:], u1[i,:], v1[i,:], u2[i,:], v2[i,:] = Solve(initial_conditions, r, l[i], m_u, E1, E2, E3, a_s, b)
+for i in range(0,3):
+    E1_1, E2_2, E3_3 = E1[i], E2[i], E3[i]
+    while abs(E3_3 - E1_1) > 1E-15:
+        u[i,:], v[i,:], u1[i,:], v1[i,:], u2[i,:], v2[i,:] = Solve(initial_conditions, r, l[i], m_u, E1_1, E2_2, E3_3, a_s, b)
         Node1 = (CalculateNodes(u[i,:], v[i,:]))
         Node2 = (CalculateNodes(u1[i,:], v1[i,:]))
         Node3 = (CalculateNodes(u2[i,:], v2[i,:]))
         Count1 = (CalculateTurningPoints(v[i,:]))
         Count2 = (CalculateTurningPoints(v1[i,:]))
         Count3 = (CalculateTurningPoints(v2[i,:]))
-        E1, E2, E3 = NewEnergy(E1, E2, E3, Node1, Node2, Node3, Count1, Count2, Count3)
-    print(E2)
+        E1_1, E2_2, E3_3 = NewEnergy(E1_1, E2_2, E3_3, Node1, Node2, Node3, Count1, Count2, Count3)
+    print(E2_2)
     u_2[i,:] = normalisation(u[i,:], r)
     u_3[i,:] = normalisation(u1[i,:], r)
     u_4[i,:] = normalisation(u2[i,:], r)
 
 plt.figure(figsize=(10, 5))
 plt.plot(r, u_3[0], label='x(t)', color='blue')
-#plt.plot(r, u_3[1], label='x(t)', color='orange')
-#plt.plot(r, u_3[2], label='x(t)', color='red')
+plt.plot(r, u_3[1], label='x(t)', color='orange')
+plt.plot(r, u_3[2], label='x(t)', color='red')
 #plt.plot(r0, a_1[0], '--', label='Analytic n=1,l=0', color='green')
 #plt.plot(r/a_0, a_1[1], '--', label='Analytic n=2,l=0', color='purple')
 #plt.plot(r/a_0, a_1[2], '--', label='Analytic n=2,l=1', color='brown')

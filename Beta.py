@@ -75,7 +75,7 @@ m_u = m_c/2
 a_s = 0.40
 E = 3.068-m_c-m_c
 #a_0 = 1/(m_e*a)
-r = np.linspace(1E-7, 15, 100)
+r = np.linspace(1E-7, 22, 10000)
 
 u, v, u1, v1, u2, v2, u_2, u_3, u_4 = np.zeros((9,3,len(r)))
 u, v, u1, v1, u2, v2 = Solve(initial_conditions, r, l, m_u, E, a_s, b1, b2, b3)

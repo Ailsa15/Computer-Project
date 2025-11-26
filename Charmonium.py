@@ -56,29 +56,11 @@ a_s = 0.40
 E1 = [0.3, 0.75, 0.95]
 E2 = [0.4, 0.8, 1]
 E3 = [0.5, 0.85, 1.1]
-r = np.linspace(1E-7, 15, 1000)
+r = np.linspace(1E-7, 22, 1000)
 u, v, u1, v1, u2, v2, u_2, u_3, u_4 = np.zeros((9,3,len(r)))
-b = 0.1951228877648632
-
-#for i in range(100):
-#while abs(b3 - b1) > 1E-8:
- #   u, v, u1, v1, u2, v2 = Solve(initial_conditions, r, l, m_u, E1, E2, E3, a_s, b)
-  #  Node1 = (CalculateNodes(u, v))
-   # Node2 = (CalculateNodes(u1, v1))
-    #Node3 = (CalculateNodes(u2, v2))
-#    Count1 = (CalculateTurningPoints(v))
- #   Count2 = (CalculateTurningPoints(v1))
-  #  Count3 = (CalculateTurningPoints(v2))
-   # print(E1, E2, E3)
-    #print(Node1, Node2, Node3)
-    #print(Count1, Count2, Count3)
-    #E1, E2, E3 = NewEnergy(E1, E2, E3, Node1, Node2, Node3, Count1, Count2, Count3)
-    #u_2 = normalisation(u, r)
-    #u_3 = normalisation(u1, r)
-    #u_4 = normalisation(u2, r)
-#print(E2)   
-#u, v, u1, v1, u2, v2, u_2, u_3, u_4 = np.zeros((9,3,len(r)))
 #b = 0.1951228877648632
+b = 0.1951228877684978
+
 for i in range(0,3):
     E1_1, E2_2, E3_3 = E1[i], E2[i], E3[i]
     while abs(E3_3 - E1_1) > 1E-15:
@@ -108,6 +90,6 @@ plt.plot(r, u_3[2], label='x(t)', color='red')
 #plt.legend([n[i] for i in range(3)], title='n values')
 plt.xlabel(r'$\frac{r}{a_0}$')
 plt.ylabel(r'$|U_{nl}(r)|^{2}$')
-plt.grid()
+#plt.grid()
 plt.show()
 

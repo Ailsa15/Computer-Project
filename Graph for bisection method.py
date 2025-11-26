@@ -24,7 +24,7 @@ r2 = np.linspace(0.1, 1600, 10000)
 l=0
 m_e=0.511
   
-E=-11E-6
+E=-12E-6
 a= 1/137
 E1 = -8E-6
 E2 = -14E-6
@@ -43,7 +43,7 @@ u3, v3 = solution3.T
 plt.figure(figsize=(10, 5))
 plt.plot(r, u3, label=f"E = E$_{0}$", color='purple')
 plt.plot(r, u2, label=f"E = E$_{1}$", color='orange')
-plt.plot(r2, u, label=f"E = E$_{2}$", color='red')
+plt.plot(r2, u, label=f"E = E$_{2}$", color='green')
 plt.plot(r1, u1, label=f"E = E$_{3}$", color='blue')
 
 plt.xlabel('r')

@@ -56,7 +56,7 @@ a_s = 0.40
 E1 = [0.3, 0.75, 0.95]
 E2 = [0.4, 0.8, 1]
 E3 = [0.5, 0.85, 1.1]
-r = np.linspace(1E-7, 22, 1000)
+r = np.linspace(1E-15, 20, 75000)
 u, v, u1, v1, u2, v2, u_2, u_3, u_4 = np.zeros((9,3,len(r)))
 #b = 0.1951228877648632
 b = 0.1951228877684978
@@ -73,14 +73,24 @@ for i in range(0,3):
         Count3 = (CalculateTurningPoints(v2[i,:]))
         E1_1, E2_2, E3_3 = NewEnergy(E1_1, E2_2, E3_3, Node1, Node2, Node3, Count1, Count2, Count3)
     print(E2_2)
+    print(E2_2 + 2*m_c)
     u_2[i,:] = normalisation(u[i,:], r)
     u_3[i,:] = normalisation(u1[i,:], r)
     u_4[i,:] = normalisation(u2[i,:], r)
 
+R0, DeltaE = np.zeros((2,3))
+for i in range(3):
+    R0[i] = (np.sqrt(u_3[i,1]) - np.sqrt(u_3[i,0])) / (r[1] - r[0])
+    print(R0[i])
+    DeltaE[i] = 8*a_s*R0[i]**2/(9*m_c**2)
+    print(DeltaE[i])
+
 plt.figure(figsize=(10, 5))
-plt.plot(r, u_3[0], label='x(t)', color='blue')
-plt.plot(r, u_3[1], label='x(t)', color='orange')
-plt.plot(r, u_3[2], label='x(t)', color='red')
+#for i in range(0,5):
+print(r[i], u_3[0,i], u_3[1,i], u_3[2,i])
+plt.plot(r[i], u_3[0,i], label='x(t)', color='blue', marker='o')
+plt.plot(r[i], u_3[1,i], label='x(t)', color='orange', marker='o')
+plt.plot(r[i], u_3[2,i], label='x(t)', color='red', marker='o')
 #plt.plot(r0, a_1[0], '--', label='Analytic n=1,l=0', color='green')
 #plt.plot(r/a_0, a_1[1], '--', label='Analytic n=2,l=0', color='purple')
 #plt.plot(r/a_0, a_1[2], '--', label='Analytic n=2,l=1', color='brown')

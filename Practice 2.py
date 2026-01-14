@@ -107,3 +107,22 @@ plt.ylabel(r'$|U_{nl}(r)|^{2}$')
 plt.grid()
 plt.show()
 
+#for i in range(100):
+#while abs(b3 - b1) > 1E-8:
+ #   u, v, u1, v1, u2, v2 = Solve(initial_conditions, r, l, m_u, E1, E2, E3, a_s, b)
+  #  Node1 = (CalculateNodes(u, v))
+   # Node2 = (CalculateNodes(u1, v1))
+    #Node3 = (CalculateNodes(u2, v2))
+#    Count1 = (CalculateTurningPoints(v))
+ #   Count2 = (CalculateTurningPoints(v1))
+  #  Count3 = (CalculateTurningPoints(v2))
+   # print(E1, E2, E3)
+    #print(Node1, Node2, Node3)
+    #print(Count1, Count2, Count3)
+    #E1, E2, E3 = NewEnergy(E1, E2, E3, Node1, Node2, Node3, Count1, Count2, Count3)
+    #u_2 = normalisation(u, r)
+    #u_3 = normalisation(u1, r)
+    #u_4 = normalisation(u2, r)
+#print(E2)   
+#u, v, u1, v1, u2, v2, u_2, u_3, u_4 = np.zeros((9,3,len(r)))
+#b = 0.1951228877648632

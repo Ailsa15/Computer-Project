@@ -41,13 +41,13 @@ u2, v2 = solution2.T
 u3, v3 = solution3.T   
 
 plt.figure(figsize=(10, 5))
-plt.plot(r, u3, label=f"E = E$_{0}$", color='purple')
-plt.plot(r, u2, label=f"E = E$_{1}$", color='orange')
-plt.plot(r2, u, label=f"E = E$_{2}$", color='green')
-plt.plot(r1, u1, label=f"E = E$_{3}$", color='blue')
+plt.plot(r, u3, label="E = Actual", color="#901FBD")
+plt.plot(r, u2, label=f"E = Too small", color="#E66D30")
+plt.plot(r2, u, label=f"E = Too large", color="#22C473")
+plt.plot(r1, u1, label=f"E = Too large", color="#3378BD")
 
-plt.xlabel('r')
-plt.ylabel('U(r)')
+plt.xlabel('r (MeV$^{-1}$)', fontsize=14)
+plt.ylabel('Radial Wavefunction, U$_{nl}$(r)', fontsize=14)
 plt.legend()
 #plt.xlim(0, 2000)
 #plt.ylim(-300,300)

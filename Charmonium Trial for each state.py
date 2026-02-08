@@ -3,6 +3,34 @@ from scipy.integrate import odeint
 import matplotlib.pyplot as plt
 from scipy.integrate import simpson
 
+print('Hi')
+#Energies for l=0, n=1 state
+#E = 0.35692156851291656
+#DeltaE = 
+
+#Mass of charmonium = 1.28 +- 0.025 GeV
+#Mass of bottomonium = 4.18 +- 0.03 GeV 
+#Mass of bottomonium (1S) = 4.65 +- 0.03 GeV
+
+#Difference in Energy: 0.009283393621444591
+#Difference in delta E: 1.286891157444112e-05
+#These are calculated using l=1, n=1 state and by adding and subtracting uncertaintiy in beta and finding the waves for that. Then the difference is calculated and divided by 2. 
+
+#Energies for l=1 and n=1
+#E1 = 0.8
+#E2 = 1
+#E3 = 1.2
+
+#Energies for l=1 and n=2
+#E1 = 1.3
+#E2 = 1.4
+#E3 = 1.5
+
+#Energies for l=1 and n=3
+#E1 = 1.72
+#E2 = 1.75
+#E3 = 1.78
+
 def system(state, r, l, m_u, E, a_s, b):
     u, v = state  
     dudr = v       
@@ -46,71 +74,80 @@ def normalisation(u, r):
     u_normalised = u/np.sqrt(normalisation)
     u_squared = u_normalised**2
     return u_squared
+
+def calculatea_s(N_f, Lambda_QCD, mQ):
+    mu = 2*mQ*mQ/(mQ + mQ)
+    a_S = 4*np.pi/((11-2/3*N_f)*np.log(mu**2/Lambda_QCD**2))
+    return a_S
+
+def expectation_inv_r3(r, u):
+    R = u / r
+    integrand = np.abs(R)**2 / r
+    return simpson(integrand, r)
+
+def DeltaE(N_f, a_s, m_c, val):
+    return 8/9*(1/4-N_f/3)*(a_s**2)/np.pi *1/m_c**2*val
+    
     
 initial_conditions = [0, 1]
-l= 0
-n= 2
-m_c = 1.34
+l= 1
+n= 1
+#m_c = 1.321
+m_c = 1.28
 m_u = m_c/2
-a_s = 0.40 
-#E1 = [0.3, 0.7, 0.9]
-#E2 = [0.4, 0.8, 1]
-#E3 = [0.5, 0.9, 1.1]
-E1 = 0.95
-E2 = 1    
-E3 = 1.1
-r = np.linspace(1E-7, 10, 1000)
+E1 = 0.8
+E2 = 1
+E3 = 1.2
+r = np.linspace(1E-7, 15, 1000)
 u, v, u1, v1, u2, v2, u_2, u_3, u_4 = np.zeros((9,3,len(r)))
-b = 0.1951228877648632
+b = 0.229953092713145 
+Deltab = 0.02307530737980575
+N_f = 4
+Lambda_QCD = 0.16  # GeV
+#mQ = 1.321  # GeV
+mQ = 1.28
+a_s = calculatea_s(N_f, Lambda_QCD, mQ)
 
-for i in range(10):
-#while abs(E3 - E1) > 1E-8:
+for i in range(5)
+#hile abs(E3 - E1) > 1E-15:
     u, v, u1, v1, u2, v2 = Solve(initial_conditions, r, l, m_u, E1, E2, E3, a_s, b)
     Node1 = (CalculateNodes(u, v))
     Node2 = (CalculateNodes(u1, v1))
     Node3 = (CalculateNodes(u2, v2))
+    print(Node1, Node2, Node3)
+    print(E1, E2, E3)
     Count1 = (CalculateTurningPoints(v))
     Count2 = (CalculateTurningPoints(v1))
     Count3 = (CalculateTurningPoints(v2))
-    print(E1, E2, E3)
-    print(Node1, Node2, Node3)
-    print(Count1, Count2, Count3)
+    #print(E1, E2, E3)
+    #print(Node1, Node2, Node3)
+    #print(Count1, Count2, Count3)
     E1, E2, E3 = NewEnergy(E1, E2, E3, Node1, Node2, Node3, Count1, Count2, Count3)
     u_2 = normalisation(u, r)
     u_3 = normalisation(u1, r)
     u_4 = normalisation(u2, r)
 print(E2)   
-#u, v, u1, v1, u2, v2, u_2, u_3, u_4 = np.zeros((9,3,len(r)))
-#b = 0.1951228877648632
-#for i in range(0,3):
- #   E1_1, E2_2, E3_3 = E1[i], E2[i], E3[i]
-  #  while abs(E3_3 - E1_1) > 1E-15:
-   #     u[i,:], v[i,:], u1[i,:], v1[i,:], u2[i,:], v2[i,:] = Solve(initial_conditions, r, l[i], m_u, E1_1, E2_2, E3_3, a_s, b)
-    #    Node1 = (CalculateNodes(u[i,:], v[i,:]))
-     #   Node2 = (CalculateNodes(u1[i,:], v1[i,:]))
-      #  Node3 = (CalculateNodes(u2[i,:], v2[i,:]))
-       # Count1 = (CalculateTurningPoints(v[i,:]))
-        #Count2 = (CalculateTurningPoints(v1[i,:]))
-        #Count3 = (CalculateTurningPoints(v2[i,:]))
-        #E1_1, E2_2, E3_3 = NewEnergy(E1_1, E2_2, E3_3, Node1, Node2, Node3, Count1, Count2, Count3)
-    #print(E2_2)
-    #u_2[i,:] = normalisation(u[i,:], r)
-    #u_3[i,:] = normalisation(u1[i,:], r)
-    #u_4[i,:] = normalisation(u2[i,:], r)
+
+R = np.sqrt(u_3)/(r)
+norm = simpson(r**2 * np.abs(R)**2, x=r)
+#print("Normalization =", norm)
+
+u = np.sqrt(u_3)
+val = expectation_inv_r3(r, u)
+#print("<1/r^3> =", val)
+
+DeltaE = DeltaE(N_f, a_s, m_c, val)
+print("Delta E =", DeltaE, "GeV")
 
 plt.figure(figsize=(10, 5))
 plt.plot(r, u_3, label='x(t)', color='blue')
-#plt.plot(r, u_3[1], label='x(t)', color='orange')
-#plt.plot(r, u_3[2], label='x(t)', color='red')
-#plt.plot(r0, a_1[0], '--', label='Analytic n=1,l=0', color='green')
-#plt.plot(r/a_0, a_1[1], '--', label='Analytic n=2,l=0', color='purple')
-#plt.plot(r/a_0, a_1[2], '--', label='Analytic n=2,l=1', color='brown')
-#plt.plot(r/a_0, u_ratio[0], '--', label='Analytic n=2,l=1', color='brown')
-#plt.plot(r/a_0, u_ratio[1], '--', label='Analytic n=2,l=1', color='brown')
-#plt.plot(r/a_0, u_ratio[2], '--', label='Analytic n=2,l=1', color='brown')
-#plt.legend([n[i] for i in range(3)], title='n values')
+
 plt.xlabel(r'$\frac{r}{a_0}$')
 plt.ylabel(r'$|U_{nl}(r)|^{2}$')
 plt.grid()
 plt.show()
 
+#h = (0.8632815033197403-0.8447147160768511)/2
+#g = (0.0019475916679201409-0.0019218538447712586)/2
+#print(h)
+#print(g)

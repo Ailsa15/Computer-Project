@@ -48,18 +48,20 @@ def normalisation(u, r):
     return u_squared
     
 initial_conditions = [0, 1]
-l= [0, 1, 0]
-n= [1, 1, 2]
-m_c = 1.34
+l= [0, 0, 0]
+n= [1, 2, 3]
+m_c = 1.321
 m_u = m_c/2
-a_s = 0.40 
-E1 = [0.3, 0.75, 0.95]
-E2 = [0.4, 0.8, 1]
-E3 = [0.5, 0.85, 1.1]
-r = np.linspace(1E-15, 20, 75000)
+a_s = 0.35717327205065746
+E1 = [0.3, 1, 1.5]
+E2 = [0.4, 1.1, 1.6]
+E3 = [0.5, 1.2, 1.7]
+r = np.linspace(1E-15, 20, 750)
 u, v, u1, v1, u2, v2, u_2, u_3, u_4 = np.zeros((9,3,len(r)))
 #b = 0.1951228877648632
-b = 0.1951228877684978
+#b = 0.1951228877684978
+b = 0.19078229503268146
+
 
 for i in range(0,3):
     E1_1, E2_2, E3_3 = E1[i], E2[i], E3[i]
@@ -72,7 +74,7 @@ for i in range(0,3):
         Count2 = (CalculateTurningPoints(v1[i,:]))
         Count3 = (CalculateTurningPoints(v2[i,:]))
         E1_1, E2_2, E3_3 = NewEnergy(E1_1, E2_2, E3_3, Node1, Node2, Node3, Count1, Count2, Count3)
-    print(E2_2)
+    #print(E2_2)
     print(E2_2 + 2*m_c)
     u_2[i,:] = normalisation(u[i,:], r)
     u_3[i,:] = normalisation(u1[i,:], r)
@@ -81,16 +83,32 @@ for i in range(0,3):
 R0, DeltaE = np.zeros((2,3))
 for i in range(3):
     R0[i] = (np.sqrt(u_3[i,1]) - np.sqrt(u_3[i,0])) / (r[1] - r[0])
-    print(R0[i])
+    #print(R0[i])
     DeltaE[i] = 8*a_s*R0[i]**2/(9*m_c**2)
     print(DeltaE[i])
 
+def expectation_inv_r3(r, R):
+    """
+    Compute <1/r^3> = ∫ |R(r)|^2 / r dr
+    assuming R is normalized with ∫ r^2 |R|^2 dr = 1.
+    """
+    integrand = (np.abs(R)**2) / r
+    return np.trapezoid(integrand, r)
+
+# Example usage:
+# r = np.linspace(1e-6, 10, 10000)   # your radial grid
+# R = your_radial_wavefunction_array
+R = np.sqrt(u_3)  # Example radial wavefunction for n=1, l=0
+val = expectation_inv_r3(r, R)
+print(val)
+
+
 plt.figure(figsize=(10, 5))
 #for i in range(0,5):
-print(r[i], u_3[0,i], u_3[1,i], u_3[2,i])
-plt.plot(r[i], u_3[0,i], label='x(t)', color='blue', marker='o')
-plt.plot(r[i], u_3[1,i], label='x(t)', color='orange', marker='o')
-plt.plot(r[i], u_3[2,i], label='x(t)', color='red', marker='o')
+#print(r, u_3[0], u_3[1], u_3[2])
+plt.plot(r, u_3[0], label=f'(1,0)', color="#5A2E98")
+plt.plot(r, u_3[1], label=f'(1,1)', color="#B22222")
+plt.plot(r, u_3[2], label=f'(2,0)', color="#009E8E")
 #plt.plot(r0, a_1[0], '--', label='Analytic n=1,l=0', color='green')
 #plt.plot(r/a_0, a_1[1], '--', label='Analytic n=2,l=0', color='purple')
 #plt.plot(r/a_0, a_1[2], '--', label='Analytic n=2,l=1', color='brown')
@@ -98,7 +116,8 @@ plt.plot(r[i], u_3[2,i], label='x(t)', color='red', marker='o')
 #plt.plot(r/a_0, u_ratio[1], '--', label='Analytic n=2,l=1', color='brown')
 #plt.plot(r/a_0, u_ratio[2], '--', label='Analytic n=2,l=1', color='brown')
 #plt.legend([n[i] for i in range(3)], title='n values')
-plt.xlabel(r'$\frac{r}{a_0}$')
+plt.legend()
+plt.xlabel('r(GeV$^{-1}$)')
 plt.ylabel(r'$|U_{nl}(r)|^{2}$')
 #plt.grid()
 plt.show()
